@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Online Book Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Online Book Store</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home Page</a></li>
+                <li><a href="cart.html" id="cartLink">Cart (0)</a></li>
+<li><a href="checkout.html">Checkout</a></li> <!-- Added Checkout Link -->
+
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="container">
+        <section class="book-section">
+            <h2 class="dropdown-header" onclick="toggleDropdown('fictionDropdown')">Fiction Books</h2>
+            <div class="book-dropdown" id="fictionDropdown">
+                <div class="book-module">
+                    <div class="book-card">
+                        <img src="TheAlcham.jpg" alt="Fiction Book 1">
+                        <h3>The Alchemist</h3>
+                        <p>Author: Paulo Coelho</p>
+                        <p>Price: 500Rs</p>
+                        <button onclick="addToCart('The Alchemist', 'Paulo Coelho', 500)">Add to Cart</button>
+                    </div>
+                    <div class="book-card">
+                        <img src="Thousand.jpg" alt="Fiction Book 2">
+                        <h3>A Thousand Splendid Suns</h3>
+                        <p>Author: Khaled Hosseini</p>
+                        <p>Price: 300Rs</p>
+                        <button onclick="addToCart('A Thousand Splendid Suns', 'Khaled Hosseini', 300)">Add to Cart</button>
+                    </div>
+                    <div class="book-card">
+                        <img src="Book.jpg" alt="Fiction Book 3">
+                        <h3>The Book Thief</h3>
+                        <p>Author: Markus Zusak</p>
+                        <p>Price: 600Rs</p>
+                        <button onclick="addToCart('The Book Thief', 'Markus Zusak', 600)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="book-section">
+            <h2 class="dropdown-header" onclick="toggleDropdown('nonFictionDropdown')">Non-Fiction Books</h2>
+            <div class="book-dropdown" id="nonFictionDropdown">
+                <div class="book-module">
+                    <div class="book-card">
+                        <img src="Make.jpg" alt="Non-Fiction Book 1">
+                        <h3>Make Time</h3>
+                        <p>Author: Jake Knapp and John Zeratsky</p>
+                        <p>Price: 750Rs</p>
+                        <button onclick="addToCart('Make Time', 'Jake Knapp and John Zeratsky', 750)">Add to Cart</button>
+                    </div>
+                    <div class="book-card">
+                        <img src="Habits.jpg" alt="Non-Fiction Book 2">
+                        <h3>Atomic Habits</h3>
+                        <p>Author: James Clear</p>
+                        <p>Price: 650Rs</p>
+                        <button onclick="addToCart('Atomic Habits', 'James Clear', 650)">Add to Cart</button>
+                    </div>
+                    <div class="book-card">
+                        <img src="eat.jpg" alt="Non-Fiction Book 3">
+                        <h3>Eat That Frog</h3>
+                        <p>Author: Brian Tracy</p>
+                        <p>Price: 985Rs</p>
+                        <button onclick="addToCart('Eat That Frog', 'Brian Tracy', 985)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let cartItems = [];
+
+        function addToCart(title, author, price) {
+            cartItems.push({ title, author, price });
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            updateCartCount();
+            window.location.href = 'cart.html'; // Redirect to the cart page
+        }
+
+        function updateCartCount() {
+            const cartCount = cartItems.length;
+            document.getElementById('cartLink').innerText = `Cart (${cartCount})`;
+        }
+
+        // JavaScript to handle dropdown display
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const isDisplayed = dropdown.style.display === 'block';
+            // Hide all dropdowns
+            document.querySelectorAll('.book-dropdown').forEach(d => d.style.display = 'none');
+            // Toggle the selected dropdown
+            dropdown.style.display = isDisplayed ? 'none' : 'block';
+        }
+
+        // Load cart items from local storage on page load
+        window.onload = function() {
+            const savedCartItems = localStorage.getItem('cartItems');
+            if (savedCartItems) {
+                cartItems = JSON.parse(savedCartItems);
+                updateCartCount();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - Online Book Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your Cart</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home Page</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main class="container">
+        <div id="cart-list" class="cart-list"></div>
+        <div class="total-price" id="totalPriceContainer">
+            <h2>Total Price: <span id="totalPrice">0</span> Rs</h2>
+        </div>
+    </main>
+
+    <script>
+        // Load cart items from local storage on page load
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const cartList = document.getElementById('cart-list');
+
+        let total = 0;
+
+        // Function to display cart items
+        function displayCartItems() {
+            cartList.innerHTML = ''; // Clear existing items
+            total = 0; // Reset total
+
+            cartItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>Author: ${item.author}</p>
+                    <p>Price: ${item.price} Rs</p>
+                    <button class="remove-button" data-index="${index}">Remove</button>
+                `;
+                cartList.appendChild(itemDiv);
+                total += item.price;
+            });
+
+            document.getElementById('totalPrice').innerText = total;
+        }
+
+        // Function to remove item from cart
+        function removeItemFromCart(index) {
+            cartItems.splice(index, 1); // Remove item from array
+            localStorage.setItem('cartItems', JSON.stringify(cartItems)); // Update local storage
+            displayCartItems(); // Refresh cart display
+        }
+
+        // Event listener for remove buttons
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-button')) {
+                const index = event.target.getAttribute('data-index');
+                removeItemFromCart(index);
+            }
+        });
+
+        // Display cart items on page load
+        displayCartItems();
+    </script>
+</body>
+</html>

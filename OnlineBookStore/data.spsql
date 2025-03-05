@@ -1,0 +1,44 @@
+-- Create database
+CREATE DATABASE OnlineBookStore;
+
+-- Use the database
+USE OnlineBookStore;
+
+-- Create Users table
+CREATE TABLE Users (
+    UserId INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Books table
+CREATE TABLE Books (
+    BookId INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(100) NOT NULL,
+    Author VARCHAR(100) NOT NULL,
+    Genre VARCHAR(50),
+    Price DECIMAL(10, 2) NOT NULL,
+    PublishedDate DATE,
+    Stock INT DEFAULT 0,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create Orders table
+CREATE TABLE Orders (
+    OrderId INT PRIMARY KEY AUTO_INCREMENT,
+    UserId INT,
+    BookId INT,
+    ShippingAddress VARCHAR(255) NOT NULL,
+    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserId) REFERENCES Users(UserId),
+    FOREIGN KEY (BookId) REFERENCES Books(BookId)
+);
+
+-- Insert sample data into Books table
+INSERT INTO Books (Title, Author, Genre, Price, PublishedDate, Stock) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 10.99, '1925-04-10', 5),
+('Educated', 'Tara Westover', 'Non-Fiction', 14.99, '2018-02-20', 8),
+('1984', 'George Orwell', 'Fiction', 12.99, '1949-06-08', 10),
+('Becoming', 'Michelle Obama', 'Non-Fiction', 16.99, '2018-11-13', 6);
